@@ -14,6 +14,10 @@ import javax.security.auth.login.LoginContext;
 import org.apache.catalina.realm.GenericPrincipal;
 import org.ietf.jgss.GSSCredential;
 
+/**
+ * The generic principal enriched with some additional information, e.g. the exact username (uppercase?) and the Hana database version.
+ *
+ */
 public class HanaPrincipal extends GenericPrincipal {
 
 	private static final long serialVersionUID = 4658263939892656292L;
@@ -52,6 +56,13 @@ public class HanaPrincipal extends GenericPrincipal {
 		}
 	}
 
+	/**
+	 * @param name Hana user name
+	 * @param password Hana password
+	 * @param hanajdbcurl Hana JDBC connection URL
+	 * @return the list of Hana role names the user has assigned, direct or indirect
+	 * @throws SQLException
+	 */
 	public static List<String> queryRoles(String name, String password, String hanajdbcurl) throws SQLException {
 		try (Connection c = getDatabaseConnection(name, password, hanajdbcurl)) {
 			try (PreparedStatement stmt = c.prepareStatement("select role_name from effective_roles where user_name = current_user"); ) {
@@ -65,6 +76,9 @@ public class HanaPrincipal extends GenericPrincipal {
 		}
 	}
 	
+	/**
+	 * @return the database connection JDBC URL used
+	 */
 	public String getHanaJDBCURL() {
 		return hanajdbcurl;
 	}
@@ -82,12 +96,15 @@ public class HanaPrincipal extends GenericPrincipal {
         }
 	}
 
+	/**
+	 * @return the version string of the connected Hana database as retrieved at login
+	 */
 	public String getHanaversion() {
 		return hanaversion;
 	}
 
 	/**
-	 * @return the exact Hana user, e.g. the loginuser might by user1 but the actual database user name is USER1
+	 * @return the exact Hana user, e.g. the loginuser might by user1 but the actual database user name is "USER1"
 	 */
 	public String getHanaUser() {
 		return hanauser;
