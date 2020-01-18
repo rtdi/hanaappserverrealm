@@ -8,7 +8,7 @@ security.
 
 ## Installation
 
-Copy the jar file into tomcat's lib folder so that it can be used in the server configuration.
+Copy the [jar](https://github.com/rtdi/hanaappserverrealm/releases) file into tomcat's lib folder so that it can be used in the server configuration.
 
 In the server.xml of the tomcat the realm is configured, with the parameter hanaJDBCURL as the only property to be specified.
 
