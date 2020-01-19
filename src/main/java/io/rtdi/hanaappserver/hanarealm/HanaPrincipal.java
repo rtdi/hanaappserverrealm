@@ -61,7 +61,7 @@ public class HanaPrincipal extends GenericPrincipal {
 	 * @param password Hana password
 	 * @param hanajdbcurl Hana JDBC connection URL
 	 * @return the list of Hana role names the user has assigned, direct or indirect
-	 * @throws SQLException
+	 * @throws SQLException in case the roles cannot be read
 	 */
 	public static List<String> queryRoles(String name, String password, String hanajdbcurl) throws SQLException {
 		try (Connection c = getDatabaseConnection(name, password, hanajdbcurl)) {
