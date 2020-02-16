@@ -23,3 +23,5 @@ In the server.xml of the tomcat the realm is configured, with the parameter hana
 		    </Engine>
 		  </Service>
 		</Server>
+
+Alternatively, the environment variable HANAJDBCURL can be set as well. This is especially useful when building docker images. 

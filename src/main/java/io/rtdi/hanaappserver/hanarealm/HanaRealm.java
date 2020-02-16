@@ -11,6 +11,10 @@ import org.apache.juli.logging.LogFactory;
 /**
  * The Hana Realm is an authentication method for tomcat to use the SAP Hana database as authenticator.
  * In addition to that, the Principal returned by this Realm has all the Hana roles the user has assigned to as well.
+ * 
+ * There are two ways to set the hanajdbcurl
+ * 1. In the server.xml as property &lt;Realm className="io.rtdi.hanaappserver.hanarealm.HanaRealm" hanaJDBCURL="jdbc:sap://hanawd:39015/HXE"/&gt;
+ * 2. As environment variable HANAJDBCURL
  *
  */
 public class HanaRealm extends RealmBase {
@@ -23,6 +27,9 @@ public class HanaRealm extends RealmBase {
 
 	@Override
 	public HanaPrincipal authenticate(String username, String credentials) {
+		if (hanajdbcurl == null) {
+			hanajdbcurl = System.getenv("HANAJDBCURL");
+		}
 		log.debug("Authenticating user \"" + username + "\" with database \"" + hanajdbcurl + "\"");
 		try {
 			HanaPrincipal principal = userdirectory.get(username);
