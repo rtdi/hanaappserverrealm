@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.catalina.realm.GenericPrincipal;
 import org.apache.catalina.realm.RealmBase;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
@@ -29,6 +30,10 @@ public class HanaRealm extends RealmBase {
 	public HanaPrincipal authenticate(String username, String credentials) {
 		if (hanajdbcurl == null) {
 			hanajdbcurl = System.getenv("HANAJDBCURL");
+			if (hanajdbcurl == null) {
+				log.debug("No hana-jdbc-url configured, neither as property in the server.xml nor as environment variable HANAJDBCURL");
+				return null;
+			}
 		}
 		log.debug("Authenticating user \"" + username + "\" with database \"" + hanajdbcurl + "\"");
 		try {
@@ -40,7 +45,7 @@ public class HanaRealm extends RealmBase {
 			}
 			return principal;
 		} catch (SQLException e) {
-			log.error("failed to login with the provided credentials for \"" + username + "\" with database \"" + hanajdbcurl + "\" and exception " + e.getMessage());
+			log.debug("failed to login with the provided credentials for \"" + username + "\" with database \"" + hanajdbcurl + "\" and exception " + e.getMessage());
 			return null;
 		}
 	}
