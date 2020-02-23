@@ -4,7 +4,7 @@
   <artifactId>hanarealm</artifactId>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Tomcat Hana Realm</description>
-	<version>0.8.4</version>
+	<version>0.8.5</version>
 	<packaging>jar</packaging>
 	<url>https://www.rtdi.io/</url>
 	<scm>
@@ -33,7 +33,7 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<properties>
-		<releaseversion>0.8.4</releaseversion>
+		<releaseversion>0.8.5</releaseversion>
 	</properties>
 	<build>
 		<plugins>

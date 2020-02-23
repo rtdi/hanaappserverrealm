@@ -28,23 +28,30 @@ public class HanaPrincipal extends GenericPrincipal {
 	public HanaPrincipal(String name, String password, String hanajdbcurl) throws SQLException {
 		super(name, password, queryRoles(name, password, hanajdbcurl));
 		this.hanajdbcurl = hanajdbcurl;
+		setSupportData(name, password, hanajdbcurl);
 	}
 
 	public HanaPrincipal(String name, String password, String hanajdbcurl, Principal userPrincipal) throws SQLException {
 		super(name, password, queryRoles(name, password, hanajdbcurl), userPrincipal);
 		this.hanajdbcurl = hanajdbcurl;
+		setSupportData(name, password, hanajdbcurl);
 	}
 
 	public HanaPrincipal(String name, String password, String hanajdbcurl, Principal userPrincipal,
 			LoginContext loginContext) throws SQLException {
 		super(name, password, queryRoles(name, password, hanajdbcurl), userPrincipal, loginContext);
 		this.hanajdbcurl = hanajdbcurl;
+		setSupportData(name, password, hanajdbcurl);
 	}
 
 	public HanaPrincipal(String name, String password, String hanajdbcurl, Principal userPrincipal,
 			LoginContext loginContext, GSSCredential gssCredential) throws SQLException {
 		super(name, password, queryRoles(name, password, hanajdbcurl), userPrincipal, loginContext, gssCredential);
 		this.hanajdbcurl = hanajdbcurl;
+		setSupportData(name, password, hanajdbcurl);
+	}
+
+	private void setSupportData(String name, String password, String hanajdbcurl) throws SQLException {
 		try (Connection c = getDatabaseConnection(name, password, hanajdbcurl)) {
 			try (PreparedStatement stmt = c.prepareStatement("select version, current_user from m_database"); ) {
 				ResultSet rs = stmt.executeQuery();
@@ -53,9 +60,8 @@ public class HanaPrincipal extends GenericPrincipal {
 					this.hanauser = rs.getString(2);
 				}
 			}
-		}
+		}		
 	}
-
 	/**
 	 * @param name Hana user name
 	 * @param password Hana password
