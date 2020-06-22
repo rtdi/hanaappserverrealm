@@ -37,8 +37,7 @@ public class HanaRealm extends RealmBase {
 		log.debug("Authenticating user \"" + username + "\" with database \"" + hanajdbcurl + "\"");
 		try {
 			HanaPrincipal principal = userdirectory.get(username);
-			if (principal == null || principal.getPassword() == null || !principal.getPassword().equals(credentials) ) { 
-				// when the password is different re-validate. Maybe it got changed in the database
+			if (principal == null ) { 
 				principal = new HanaPrincipal(username, credentials, hanajdbcurl); // this does throw a SQLException in case the login data is invalid
 				userdirectory.put(username, principal);
 			}
