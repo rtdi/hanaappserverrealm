@@ -1,4 +1,4 @@
-package io.rtdi.hanaappserver.hanarealm;
+package io.rtdi.appcontainer.hanarealm;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import org.apache.juli.logging.LogFactory;
  * In addition to that, the Principal returned by this Realm has all the Hana roles the user has assigned to as well.
  * 
  * There are two ways to set the hanajdbcurl
- * 1. In the server.xml as property &lt;Realm className="io.rtdi.hanaappserver.hanarealm.HanaRealm" hanaJDBCURL="jdbc:sap://hanawd:39015/HXE"/&gt;
+ * 1. In the server.xml as property &lt;Realm className="io.rtdi.appcontainer.hanarealm.HanaRealm" hanaJDBCURL="jdbc:sap://hanawd:39015/HXE"/&gt;
  * 2. As environment variable HANAJDBCURL
  *
  */

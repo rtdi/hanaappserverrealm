@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.rtdi.hanaappserver</groupId>
+  <groupId>io.rtdi.appcontainer</groupId>
   <artifactId>hanarealm</artifactId>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Tomcat Hana Realm</description>
-	<version>0.8.6</version>
+	<version>0.9.1</version>
 	<packaging>jar</packaging>
 	<url>https://www.rtdi.io/</url>
 	<developers>
@@ -47,8 +47,8 @@
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-catalina</artifactId>
-			<version>9.0.16</version>
-			<type>jar</type>
+			<version>9.0.45</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.sap.cloud.db.jdbc</groupId>
@@ -60,6 +60,11 @@
 			<artifactId>junit</artifactId>
 			<version>4.13-beta-3</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rtdi.appcontainer</groupId>
+			<artifactId>appcontainerrealm</artifactId>
+			<version>0.9.1</version>
 		</dependency>
 	</dependencies>
 </project>

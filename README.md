@@ -17,7 +17,7 @@ In the server.xml of the tomcat the realm is configured, with the parameter hana
 		    <Engine>
 		      ...
 		      <Realm className="org.apache.catalina.realm.LockOutRealm">
-		        <Realm className="io.rtdi.hanaappserver.hanarealm.HanaRealm" hanaJDBCURL="jdbc:sap://hanartdi:39015/HXE"/>
+		        <Realm className="io.rtdi.appcontainer.hanarealm.HanaRealm" hanaJDBCURL="jdbc:sap://hanartdi:39015/HXE"/>
 		      </Realm>
 		      ...
 		    </Engine>

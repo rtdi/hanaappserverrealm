@@ -1,4 +1,4 @@
-package io.rtdi.hanaappserver.hanarealm;
+package io.rtdi.appcontainer.hanarealm;
 
 import java.security.Principal;
 import java.sql.Connection;
@@ -14,26 +14,31 @@ import javax.security.auth.login.LoginContext;
 import org.apache.catalina.realm.GenericPrincipal;
 import org.ietf.jgss.GSSCredential;
 
+import io.rtdi.appcontainer.realm.IAppContainerPrincipal;
+
 /**
  * The generic principal enriched with some additional information, e.g. the exact username (uppercase?) and the Hana database version.
  *
  */
-public class HanaPrincipal extends GenericPrincipal {
+public class HanaPrincipal extends GenericPrincipal implements IAppContainerPrincipal {
 
 	private static final long serialVersionUID = 4658263939892656292L;
 	private String hanajdbcurl;
 	private String hanaversion;
 	private String hanauser;
+	private String password;
 
 	public HanaPrincipal(String name, String password, String hanajdbcurl) throws SQLException {
 		super(name, password, queryRoles(name, password, hanajdbcurl));
 		this.hanajdbcurl = hanajdbcurl;
+		this.password = password;
 		setSupportData(name, password, hanajdbcurl);
 	}
 
 	public HanaPrincipal(String name, String password, String hanajdbcurl, Principal userPrincipal) throws SQLException {
 		super(name, password, queryRoles(name, password, hanajdbcurl), userPrincipal);
 		this.hanajdbcurl = hanajdbcurl;
+		this.password = password;
 		setSupportData(name, password, hanajdbcurl);
 	}
 
@@ -41,6 +46,7 @@ public class HanaPrincipal extends GenericPrincipal {
 			LoginContext loginContext) throws SQLException {
 		super(name, password, queryRoles(name, password, hanajdbcurl), userPrincipal, loginContext);
 		this.hanajdbcurl = hanajdbcurl;
+		this.password = password;
 		setSupportData(name, password, hanajdbcurl);
 	}
 
@@ -48,6 +54,7 @@ public class HanaPrincipal extends GenericPrincipal {
 			LoginContext loginContext, GSSCredential gssCredential) throws SQLException {
 		super(name, password, queryRoles(name, password, hanajdbcurl), userPrincipal, loginContext, gssCredential);
 		this.hanajdbcurl = hanajdbcurl;
+		this.password = password;
 		setSupportData(name, password, hanajdbcurl);
 	}
 
@@ -85,12 +92,14 @@ public class HanaPrincipal extends GenericPrincipal {
 	/**
 	 * @return the database connection JDBC URL used
 	 */
-	public String getHanaJDBCURL() {
+	@Override
+	public String getJDBCURL() {
 		return hanajdbcurl;
 	}
 	
-	public Connection createNewHanaConnection() throws SQLException {
-		return getDatabaseConnection(super.getName(), super.getPassword(), hanajdbcurl);
+	@Override
+	public Connection createNewConnection() throws SQLException {
+		return getDatabaseConnection(super.getName(), password, hanajdbcurl);
 	}
 	
 	static Connection getDatabaseConnection(String user, String passwd, String jdbcurl) throws SQLException {
@@ -101,19 +110,32 @@ public class HanaPrincipal extends GenericPrincipal {
             throw new SQLException("No Hana JDBC driver library found");
         }
 	}
+	
+	@Override
+	public String getDriverURL() {
+		return "com.sap.db.jdbc.Driver";
+	}
+
 
 	/**
 	 * @return the version string of the connected Hana database as retrieved at login
 	 */
-	public String getHanaversion() {
+	@Override
+	public String getDBVersion() {
 		return hanaversion;
 	}
 
 	/**
 	 * @return the exact Hana user, e.g. the loginuser might by user1 but the actual database user name is "USER1"
 	 */
-	public String getHanaUser() {
+	@Override
+	public String getDBUser() {
 		return hanauser;
+	}
+
+	@Override
+	public String getPassword() {
+		return password;
 	}
 
 }
