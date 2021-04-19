@@ -10,17 +10,20 @@ jobs:
     name: Build and Release
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: actions/cache@master
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
     - name: Set up JDK 12
-      uses: actions/setup-java@master
+      uses: actions/setup-java@v2
       with:
         java-version: 12
+        distribution: 'adopt'
+        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+        settings-path: ${{ github.workspace }} # location for the settings.xml file
     - name: Build and test project
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -30,7 +33,7 @@ jobs:
         mvn -DskipTests=true --no-transfer-progress clean package
     - name: Create Release
       id: create_release
-      uses: actions/create-release@master
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -40,7 +43,7 @@ jobs:
         prerelease: false
     - name: Upload Release Asset
       id: upload-release-asset 
-      uses: actions/upload-release-asset@master
+      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
