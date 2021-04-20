@@ -14,7 +14,7 @@ import org.apache.juli.logging.LogFactory;
  * 
  * There are two ways to set the hanajdbcurl
  * 1. In the server.xml as property &lt;Realm className="io.rtdi.appcontainer.hanarealm.HanaRealm" hanaJDBCURL="jdbc:sap://hanawd:39015/HXE"/&gt;
- * 2. As environment variable HANAJDBCURL
+ * 2. As environment variable JDBCURL
  *
  */
 public class HanaRealm extends RealmBase {
@@ -28,9 +28,9 @@ public class HanaRealm extends RealmBase {
 	@Override
 	public HanaPrincipal authenticate(String username, String credentials) {
 		if (hanajdbcurl == null) {
-			hanajdbcurl = System.getenv("HANAJDBCURL");
+			hanajdbcurl = System.getenv("JDBCURL");
 			if (hanajdbcurl == null) {
-				log.debug("No hana-jdbc-url configured, neither as property in the server.xml nor as environment variable HANAJDBCURL");
+				log.debug("No jdbc-url configured, neither as property in the server.xml nor as environment variable JDBCURL");
 				return null;
 			}
 		}
@@ -68,14 +68,14 @@ public class HanaRealm extends RealmBase {
 	/**
 	 * @return JDBC URL of the used database
 	 */
-	public String getHanaJDBCURL() {
+	public String getJDBCURL() {
 		return hanajdbcurl;
 	}
 
 	/**
 	 * @param hanajdbcurl the JDBC URL to be used
 	 */
-	public void setHanaJDBCURL(String hanajdbcurl) {
+	public void setJDBCURL(String hanajdbcurl) {
 		this.hanajdbcurl = hanajdbcurl;
 	}
 }
